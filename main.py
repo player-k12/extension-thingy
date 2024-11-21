@@ -24,7 +24,15 @@ with open("policy.json", "r") as f:
             "forced": False,
             "last_updated": page.partition('Details')[2].partition('Updated')[2].partition('<div>')[2].partition('</div>')[0],
             "size": page.partition('Details')[2].partition('Size')[2].partition('<div>')[2].partition('</div>')[0],
+            "rating": float(page.partition('--star-icon-size: 18px')[2].partition('</span>')[0].split('>')[-1]),
+            "reviews": page.partition('/reviews')[2].partition(' rating')[0].split('>')[-1],
+            "users": int(page.partition(' users</div>')[0].split('>')[-1].replace(',', '')) if 'users</div>' in page else -1
         }
+
+        if 'K' in tmp["reviews"]:
+            tmp['reviews'] = int(float(tmp['reviews'][:-1])*1000)
+        else:
+            tmp['reviews'] = int(tmp['reviews'])
         if ' href="./category/themes">Theme</a>' in page:
             tmp["type"] = "theme"
             tmp["tr3nch_compatible"] = "No"
@@ -51,8 +59,17 @@ with open("policy.json", "r") as f:
                 "tr3nch_compatible": "No" if 'aria-label="Featured Badge"' in page else "Maybe",
                 "forced": True,
                 "last_updated": page.partition('Details')[2].partition('Updated')[2].partition('<div>')[2].partition('</div>')[0],
-                "size": page.partition('Details')[2].partition('Size')[2].partition('<div>')[2].partition('</div>')[0]
+                "size": page.partition('Details')[2].partition('Size')[2].partition('<div>')[2].partition('</div>')[0],
+                "rating": float(page.partition('--star-icon-size: 18px')[2].partition('</span>')[0].split('>')[-1]),
+                "reviews": page.partition('/reviews')[2].partition(' rating')[0].split('>')[-1],
+                "users": int(page.partition(' users</div>')[0].split('>')[-1].replace(',', '')) if 'users</div>' in page else -1
             }
+
+            if 'K' in tmp["reviews"]:
+                tmp['reviews'] = int(float(tmp['reviews'][:-1]) * 1000)
+            else:
+                tmp['reviews'] = int(tmp['reviews'])
+
             if ' href="./category/themes">Theme</a>' in page:
                 tmp["type"] = "theme"
                 tmp["tr3nch_compatible"] = "No"
@@ -68,10 +85,14 @@ with open("policy.json", "r") as f:
                 "page": site,
                 "name": "Unkown",
                 "tr3nch_compatible": "Maybe",
-                "forced": True
+                "forced": True,
+                "last_updated": "Unkown",
+                "size": "Unkown",
+                "rating": -1.0,
+                "reviews": -1,
+                "users": -1,
             }
             print(tmp)
-
         out.append(tmp)
 with open("out.json", "w+") as f:
     json.dump(out, f)
