@@ -8,6 +8,8 @@ with open("policy.json", "r") as f:
     policy = json.load(f)
     extensions: list[str] = policy["chromePolicies"]["ExtensionInstallAllowlist"]["value"]
     force_installed_extensions: list[str] = policy["chromePolicies"]["ExtensionInstallForcelist"]["value"]
+    extensions = [i for i in extensions if i not in [i.partition(';')[0] for i in force_installed_extensions]]
+    print(extensions, force_installed_extensions)
     out = []
 
     for ext_id in extensions:
@@ -25,7 +27,7 @@ with open("policy.json", "r") as f:
             "last_updated": page.partition('Details')[2].partition('Updated')[2].partition('<div>')[2].partition('</div>')[0],
             "size": page.partition('Details')[2].partition('Size')[2].partition('<div>')[2].partition('</div>')[0],
             "rating": float(page.partition('--star-icon-size: 18px')[2].partition('</span>')[0].split('>')[-1]),
-            "reviews": page.partition('/reviews')[2].partition(' rating')[0].split('>')[-1],
+            "reviews": page.partition('/reviews')[2].partition(' rating')[0].split('>')[-1] if '/reviews' in page else -1,
             "users": int(page.partition(' users</div>')[0].split('>')[-1].replace(',', '')) if 'users</div>' in page else -1
         }
 
@@ -61,7 +63,7 @@ with open("policy.json", "r") as f:
                 "last_updated": page.partition('Details')[2].partition('Updated')[2].partition('<div>')[2].partition('</div>')[0],
                 "size": page.partition('Details')[2].partition('Size')[2].partition('<div>')[2].partition('</div>')[0],
                 "rating": float(page.partition('--star-icon-size: 18px')[2].partition('</span>')[0].split('>')[-1]),
-                "reviews": page.partition('/reviews')[2].partition(' rating')[0].split('>')[-1],
+                "reviews": page.partition('/reviews')[2].partition(' rating')[0].split('>')[-1] if '/reviews' in page else -1,
                 "users": int(page.partition(' users</div>')[0].split('>')[-1].replace(',', '')) if 'users</div>' in page else -1
             }
 
