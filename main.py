@@ -22,7 +22,8 @@ with open("policy.json", "r") as f:
             "id": ext_id,
             "page": site,
             "name": page.partition('alt="Item logo image for ')[2].partition('"')[0],
-            "tr3nch_compatible": "No" if 'aria-label="Featured Badge"' in page else "Maybe",
+            # "tr3nch_compatible": "No" if 'aria-label="Featured Badge"' in page else "Maybe",
+            # stupid because in skivox you can install any extension anyways due to policy not in effect
             "forced": False,
             "last_updated": page.partition('Details')[2].partition('Updated')[2].partition('<div>')[2].partition('</div>')[0],
             "size": page.partition('Details')[2].partition('Size')[2].partition('<div>')[2].partition('</div>')[0],
@@ -37,10 +38,10 @@ with open("policy.json", "r") as f:
             tmp['reviews'] = int(tmp['reviews'])
         if ' href="./category/themes">Theme</a>' in page:
             tmp["type"] = "theme"
-            tmp["tr3nch_compatible"] = "No"
+            # tmp["tr3nch_compatible"] = "No"
         elif "This item can only run on ChromeOS" in page:
             tmp["type"] = "app"
-            tmp["tr3nch_compatible"] = "No"
+            # tmp["tr3nch_compatible"] = "No"
         else:
             tmp["type"] = "extension"
         print(tmp)
@@ -58,7 +59,7 @@ with open("policy.json", "r") as f:
                 "id": ext_id,
                 "page": site,
                 "name": page.partition('alt="Item logo image for ')[2].partition('"')[0],
-                "tr3nch_compatible": "No" if 'aria-label="Featured Badge"' in page else "Maybe",
+                # "tr3nch_compatible": "No" if 'aria-label="Featured Badge"' in page else "Maybe",
                 "forced": True,
                 "last_updated": page.partition('Details')[2].partition('Updated')[2].partition('<div>')[2].partition('</div>')[0],
                 "size": page.partition('Details')[2].partition('Size')[2].partition('<div>')[2].partition('</div>')[0],
@@ -74,10 +75,10 @@ with open("policy.json", "r") as f:
 
             if ' href="./category/themes">Theme</a>' in page:
                 tmp["type"] = "theme"
-                tmp["tr3nch_compatible"] = "No"
+                # tmp["tr3nch_compatible"] = "No"
             elif "This item can only run on ChromeOS" in page:
                 tmp["type"] = "app"
-                tmp["tr3nch_compatible"] = "No"
+                # tmp["tr3nch_compatible"] = "No"
             else:
                 tmp["type"] = "extension"
             print(tmp)
