@@ -87,7 +87,7 @@ with open("policy.json", "r") as f:
                 "id": ext_id,
                 "page": site,
                 "name": "Unkown",
-                "tr3nch_compatible": "Maybe",
+                # "tr3nch_compatible": "Maybe",
                 "forced": True,
                 "last_updated": "Unkown",
                 "size": "Unkown",
